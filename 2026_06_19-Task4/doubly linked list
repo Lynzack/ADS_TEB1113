@@ -1,0 +1,18 @@
+#include <iostream>
+
+using namespace std;
+struct Node {
+    string name;
+    Node* next = NULL;
+    Node* prev = NULL;
+
+};
+
+int main() {
+    Node* node1 = new Node();
+    Node* node2 = new Node();
+    Node* node3 = new Node();
+    Node* node4 = new Node();
+
+    node1 -> name
+}
