@@ -1,49 +1,114 @@
 #include <iostream>
+#include <string>
+
 using namespace std;
 
-
-struct Node{
+struct Node {
     string name;
     Node* next = nullptr;
 };
 
-int main(){
-    Node* node1 = new Node();
-    Node* node2 = new Node();
-    Node* node3 = new Node();
-    Node* node4 = new Node();
 
-    node1->name = "Liyana";
-    node1->next = node2;
-
-    node2->name = "Ahmad";
-    node2->next = node3;
-
-    node3->name = "Sarah";
-    node3->next = node4;
-
-    node4->name = "Omar";
-    node4->next = nullptr;
+void displayList(Node* head) {
+    if (head == nullptr) {
+        cout << "The list is empty." << endl;
+        return;
+    }
+    
+    Node* temp = head;
+    while (temp != nullptr) {
+        cout << temp->name<<endl;
+        temp = temp->next;
+    }
+    cout << "NULL" << endl;
+}
 
 
-    Node* display_node = node1;
+void insertAtEnd(Node*& head, string newName) {
+    Node* newNode = new Node();
+    newNode->name = newName;
+    newNode->next = nullptr;
+
+   
+    if (head == nullptr) {
+        head = newNode;
+        return;
+    }
 
 
-    // // Create first node
-    // Node* head = nullptr;
-    // Node* tail = nullptr;
+    Node* temp = head;
+    while (temp->next != nullptr) {
+        temp = temp->next;
+    }
+    
 
-    // for (int i = 10; i <= 50 ; i +=10){
-    //     Node* newNode = new Node;
-    //     newNode->name = "liyana";
-    //     newNode->next = nullptr;
+    temp->next = newNode;
+}
 
-    //     if (head == nullptr){
-    //         head = newNode;
-    //         tail = newNode;
-    //     } else {
-    //         tail->next = newNode; //(newNode)
-    //         tail = newNode;
-    //     }
-    // }
+
+void deleteNode(Node*& head, string targetName) {
+    if (head == nullptr) {
+        cout << "List is empty. Cannot delete." << endl;
+        return;
+    }
+
+    // Case 1: The node to be deleted is the head node
+    if (head->name == targetName) {
+        Node* temp = head;
+        head = head->next; // Move head to the next node
+        delete temp;       // Free memory
+        cout << "Deleted " << targetName << " from the list.\n";
+        return;
+    }
+
+    // Case 2: The node is somewhere else in the list
+    Node* current = head;
+    Node* prev = nullptr;
+
+    while (current != nullptr && current->name != targetName) {
+        prev = current;
+        current = current->next;
+    }
+
+    // If the name wasn't found in the list
+    if (current == nullptr) {
+        cout << "Name \"" << targetName << "\" not found in the list.\n";
+        return;
+    }
+
+    // Unlink the node from the linked list and free memory
+    prev->next = current->next;
+    delete current;
+    cout << "Deleted " << targetName << " from the list.\n";
+}
+
+int main() {
+    Node* head = nullptr; 
+
+   
+    cout << "--- Inserting Nodes ---" << endl;
+    insertAtEnd(head, "Liyana");
+    insertAtEnd(head, "Ahmad");
+    insertAtEnd(head, "Sarah");
+    insertAtEnd(head, "Omar");
+    
+  
+    displayList(head); 
+    cout << endl;
+
+ 
+    cout << "--- Deleting 'Sarah' (Middle Node) ---" << endl;
+    deleteNode(head, "Sarah");
+    displayList(head);
+    cout << endl;
+
+    cout << "--- Deleting 'Liyana' (Head Node) ---" << endl;
+    deleteNode(head, "Liyana");
+    displayList(head);
+    cout << endl;
+    
+    cout << "--- Trying to delete a non-existent node ---" << endl;
+    deleteNode(head, "John");
+
+    return 0;
 }
